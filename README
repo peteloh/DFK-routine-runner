@@ -1,0 +1,8 @@
+This code builds upon SansegoTek's Quest-Runner that supports only Fishing and Foraging quests. 
+
+This code now supports gardening and mining quests.
+
+How it works:
+- edit the config.json file to change parameters
+- edit quests section of config file to add which hero should be doing which quest.
+- run quest_runner.js

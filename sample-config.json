@@ -1,0 +1,192 @@
+{
+    "wallet": {
+        "address": "your public address here",
+        "encryptedWalletPath": "./w.json"
+    },
+
+    "professionMaxAttempts": {
+        "Fishing": 5,
+        "Foraging": 5,
+        "Gardening": 1,
+        "JewelMining": 1,
+        "GoldMining": 1
+    },
+
+    "nonProfessionMaxAttempts": {
+        "Fishing": 3,
+        "Foraging": 3,
+        "Gardening": 1,
+        "JewelMining": 1,
+        "GoldMining": 1
+    },
+
+    "maxQuestGroupSize" : {
+        "Fishing": 6,
+        "Foraging": 6,
+        "Gardening": 1,
+        "JEWELMining": 2,
+        "GoldMining": 6
+    },
+
+    "pollingInterval": "60000",
+
+    "quests": [
+        {
+            "name": "Fishing",
+            "poolId": false,
+            "professionHeroes": [124852, 125145],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xE259e8386d38467f0E7fFEdB69c3c9C935dfaeFc"
+        },
+        {
+            "name": "Foraging",
+            "poolId": false,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x3132c76acF2217646fB8391918D28a16bD8A8Ef4"
+        },
+        {
+            "name": "JEWELMining",
+            "poolId": false,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x569E6a4c2e3aF31B337Be00657B4C040C828Dd73"
+        },
+        {
+            "name": "GoldMining",
+            "poolId": false,
+            "professionHeroes": [129625],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x569E6a4c2e3aF31B337Be00657B4C040C828Dd73"
+        },
+        {
+            "name": "Gardening-JEWEL-ONE",
+            "poolId": 1,
+            "professionHeroes": [59353],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-BUSD",
+            "poolId": 2,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-bscBNB",
+            "poolId": 3,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-1ETH",
+            "poolId": 4,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-XYA",
+            "poolId": 6,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-1USDC",
+            "poolId": 7,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-1WBTC",
+            "poolId": 8,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-1ETH",
+            "poolId": 9,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-ONE-1USDC",
+            "poolId": 11,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-1WBTC-1ETH",
+            "poolId": 12,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-AVAX",
+            "poolId": 16,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-FTM",
+            "poolId": 17,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-LUNA",
+            "poolId": 18,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        },
+        {
+            "name": "Gardening-JEWEL-WMATIC",
+            "poolId": 19,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
+        }
+    ],
+
+    "poolAddress" : {
+        "JEWEL-FTM" : "0x7f89b5F33138C89FAd4092a7C079973C95362D53",
+        "1" : "0xEb579ddcD49A7beb3f205c9fF6006Bb6390F138f",
+        "JEWEL-WMATIC" : "0x3E81154912E5E2Cc9B10Ad123BF14aeb93aE5318",
+        "JEWEL-bscBNB" : "0xE7d0116Dd1DBBBA2EFBAd58f097D1FFbbeDc4923",
+        "JEWEL-BUSD" : "0xE01502Db14929b7733e7112E173C3bCF566F996E",
+        "JEWEL-LUNA" : "0xB6e9754b90b338ccB2a74fA31de48ad89f65ec5e",
+        "JEWEL-1WBTC" : "0x0AcCE15D05B4BA4dBEdFD7AFD51EA4FA1592f75E",
+        "JEWEL-AVAX" : "0x093956649D43f23fe4E7144fb1C3Ad01586cCf1e",
+        "JEWEL-UST" : "0xb91A0dFA0178500FEDC526f26A89803C387772E8",
+        "JEWEL-1ETH" : "0xEaB84868f6c8569E14263a5326ECd62F5328a70f",
+        "JEWEL-XYA" : "0x3733062773B24F9bAfa1e8f2e5A352976f008A95",
+        "JEWEL-1USDC" : "0xA1221A5BBEa699f507CC00bDedeA05b5d2e32Eba",
+        "ONE-1USDC" : "0x66C17f5381d7821385974783BE34c9b31f75Eb78",
+        "ONE-1ETH" : "0x864fcd9a42a5f6e0f76BC309Ee26c8fab473FC3e",
+        "1WBTC-1ETH" : "0x997f00485B238c83f7e58C2Ea1866DFD79f04A4b"
+    },
+
+    "questContract": "0x5100Bd31b822371108A0f63DCFb6594b9919Eaf4",
+    "heroContract": "0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c",
+    "masterGardenerContract": "0xDB30643c71aC9e2122cA0341ED77d09D5f99F924",
+
+    "useBackupRpc": true,
+    "rpc": {
+        "harmonyRpc": "https://api.harmony.one",
+        "poktRpc": "https://harmony-0-rpc.gateway.pokt.network"
+    },
+
+    "gasPrice": 30000000000,
+    "gasLimit": 5000000
+}
