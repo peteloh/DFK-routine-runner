@@ -1,0 +1,26 @@
+{
+  "name": "dfk-routine-runner",
+  "version": "1.0.0",
+  "description": "This code builds upon SansegoTek's DFKQuestRunner that developed a great framework for automatic fishing / foraging questing with many tweakable parameters in the config file.\r The following is the link to the github repo: https://github.com/SansegoTek/DFKQuestRunner",
+  "main": "routine_runner.js",
+  "directories": {    
+    "test": "test"
+  },
+  "dependencies": {
+    "ethers": "^5.5.2"
+  },
+  "scripts": {
+    "start": "node routine_runner.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peteloh/DFK-routine-runner.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peteloh/DFK-routine-runner/issues"
+  },
+  "homepage": "https://github.com/peteloh/DFK-routine-runner#readme"
+}
