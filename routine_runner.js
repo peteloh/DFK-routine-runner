@@ -4,7 +4,7 @@ const readline = require("readline");
 const ethers = require("ethers");
 
 // import json files
-const config = require("./config.json"); 
+const config = require("./config.actual.json"); 
 const questContractAbi = require("./abi/quest_contract.json");
 const masterGardenerAbi = require("./abi/master_gardener.json");
 const auctionAbi = require("./abi/auctions.json");

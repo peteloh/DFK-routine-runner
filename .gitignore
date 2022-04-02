@@ -1,5 +1,6 @@
 #config
 w.json
+config.actual.json
 
 # Logs
 logs
