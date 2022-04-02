@@ -15,26 +15,27 @@ const utils = require("./utils.js");
 
 // setup parameters
 const callOptions = { gasPrice: config.gasPrice, gasLimit: config.gasLimit };
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+const ZERO_ADDRESS = ethers.constants.AddressZero;
+
+let provider, questContract, heroContract, auctionContract, wallet;
 
 async function main() {
     try {
         // Connect to questContract through rpc
         provider = new ethers.providers.JsonRpcProvider(utils.getRpc());
+
         questContract = new ethers.Contract(
             config.questContract,
             questContractAbi,
             provider
         );
-        // Connect to heroContract through rpc
-        provider = new ethers.providers.JsonRpcProvider(utils.getRpc());
+
         heroContract = new ethers.Contract(
             config.heroContract,
             heroAbi,
             provider
         );
-        // Connect to auctionContract through rpc
-        provider = new ethers.providers.JsonRpcProvider(utils.getRpc());
+
         auctionContract = new ethers.Contract(
             config.auctionsContract,
             auctionAbi,
@@ -118,12 +119,12 @@ async function StartRoutine() {
             await startQuest(quest);
         }
 
-        const interval = config.pollingInterval + config.pollingJitter * Math.random();
+        const interval = config.pollingInterval + Math.round(config.pollingJitter * Math.random());
         setTimeout(() => StartRoutine(), interval);
         console.log(`\nWaiting for ${interval / 1000} seconds...\n`);
 
     } catch (err) {
-        const interval = config.pollingInterval + config.pollingJitter * Math.random();
+        const interval = config.pollingInterval + Math.round(config.pollingJitter * Math.random());
         console.error(
             `An error occured. Will attempt to retry in ` +
                 `${interval / 1000} seconds... Error:`,
