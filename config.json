@@ -28,7 +28,8 @@
         "GoldMining": 6
     },
 
-    "pollingInterval": "60000",
+    "pollingInterval": 3600000,
+    "pollingJitter": 3600000,
 
     "lastUpdatedUserHeroes" : [
             59353,  71631,
@@ -71,7 +72,7 @@
             "poolId": false,
             "professionHeroes": [],
             "nonProfessionHeroes": [],
-            "contractAddress": "0x569E6a4c2e3aF31B337Be00657B4C040C828Dd73"
+            "contractAddress": "0x6ff019415ee105acf2ac52483a33f5b43eadb8d0"
         },
         {
             "name": "GoldMining",
@@ -210,5 +211,5 @@
     },
 
     "gasPrice": 30000000000,
-    "gasLimit": 5000000
+    "gasLimit": 10000000
 }

@@ -109,7 +109,7 @@ async function StartRoutine() {
         for (heroId of heroesInWallet) {
             heroStamina = await questContract.getCurrentStamina(heroId);
             // console.log(heroStamina.toNumber()) // DEBUGGING
-            if (heroStamina.toNumber() < 20) {listHeroForSale(heroId)}
+            if (heroStamina.toNumber() < 15) {listHeroForSale(heroId)}
         }
         
         // Start any quests needing to start
@@ -118,16 +118,18 @@ async function StartRoutine() {
             await startQuest(quest);
         }
 
-        setTimeout(() => StartRoutine(), config.pollingInterval);
-        console.log(`\nWaiting for ${config.pollingInterval / 1000} seconds...\n`);
+        const interval = config.pollingInterval + config.pollingJitter * Math.random();
+        setTimeout(() => StartRoutine(), interval);
+        console.log(`\nWaiting for ${interval / 1000} seconds...\n`);
 
     } catch (err) {
+        const interval = config.pollingInterval + config.pollingJitter * Math.random();
         console.error(
             `An error occured. Will attempt to retry in ` +
-                `${config.pollingInterval / 1000} seconds... Error:`,
+                `${interval / 1000} seconds... Error:`,
             err
         );
-        setTimeout(() => StartRoutine(), config.pollingInterval);
+        setTimeout(() => StartRoutine(), interval);
     }
 }
 
@@ -204,7 +206,7 @@ async function getHeroesWithGoodStamina(
     } else {
         // Both gardening and mining costs 1 stamina per tick, profersional or not.
         // Set to be ready at 15 stamina
-        minStamina = 25;
+        minStamina = 15;
     }
     
     let heroes = professional
