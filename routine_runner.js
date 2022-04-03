@@ -65,88 +65,95 @@ async function main() {
     }
 }
 
+async function checkWalletHeroes() {
+    // console.log("\nFetching all user heroes...\n");
+    // heroesInAuction = await getUserAuctions(config.wallet.address)
+    heroesInAuction = []
+    
+    heroesInWallet = await getUserHeroes(config.wallet.address);
+
+    // var curentUserHeroes = heroesInAuction.concat(heroesInWallet)
+    var curentUserHeroes = heroesInWallet;
+    // console.log('Current User Heroes')
+    // console.log(curentUserHeroes)
+
+    var lastUpdatedUserHero = config.lastUpdatedUserHeroes
+    // console.log(lastUpdatedUserHero)
+
+    var herosSold = lastUpdatedUserHero.filter(x => !curentUserHeroes.includes(x));
+    var herosNew = curentUserHeroes.filter(x => !lastUpdatedUserHero.includes(x));
+
+    if (herosNew.length || herosSold.length) {
+        console.log(`New hero(s) : ${herosNew}. Hero(s) sold : ${herosSold}`);
+    }
+
+    return { herosSold, heroesInAuction }
+}
+
 async function StartRoutine() {
+    const interval = config.pollingInterval + config.pollingJitter * Math.random();
+    const minutesInterval = Math.round(interval / 60000);
+
     try {
-        // console.log("\nFetching all user heroes...\n");
-        // heroesInAuction = await getUserAuctions(config.wallet.address)
-        heroesInAuction = []
-        heroesInWallet = await getUserHeroes(config.wallet.address)
+        await completeQuests();        
 
-        var curentUserHeroes = heroesInAuction.concat(heroesInWallet)
-        // console.log('Current User Heroes')
-        // console.log(curentUserHeroes)
-
-        var lastUpdatedUserHero = config.lastUpdatedUserHeroes
-        // console.log(lastUpdatedUserHero)
-
-        var heroSold = lastUpdatedUserHero.filter(x => !curentUserHeroes.includes(x));
-        var heroNew = curentUserHeroes.filter(x => !lastUpdatedUserHero.includes(x));
-
-        if (heroNew.length || heroSold.length) {
-            console.log(`New hero(s) : ${heroNew}. Hero(s) sold : ${heroSold}`);
-        }
-
-        console.log("\nChecking for quests...\n");
-        let activeQuests = await questContract.getActiveQuests(
-            config.wallet.address
-        );
-
-        // Display the finish time for any quests in progress
-        let runningQuests = activeQuests.filter(
-            (quest) => quest.completeAtTime >= Math.round(Date.now() / 1000)
-        );
-        runningQuests.forEach((quest) =>
-            console.log(
-                `Quest led by hero ${
-                    quest.heroes[0]
-                } is due to complete at ${utils.displayTime(quest.completeAtTime)}`
-            )
-        );
-
-        // Complete any quests that need to be completed
-        let doneQuests = activeQuests.filter(
-            (quest) => !runningQuests.includes(quest)
-        );
-        for (const quest of doneQuests) {
-            await completeQuest(quest.heroes[0]);
-        }
-
-        // // List any non-full stamina in wallet for sale
-        // // After completing quest, send them to Auction
-        // for (heroId of heroesInWallet) {
-        //     heroStamina = await questContract.getCurrentStamina(heroId);
-        //     // console.log(heroStamina.toNumber()) // DEBUGGING
-        //     if (heroStamina.toNumber() < 15 ) {listHeroForSale(heroId)}
-        // }
-        
-        // Start any quests needing to start
-        let questsToStart = await getQuestsToStart(activeQuests, heroSold, heroesInAuction);
-        for (const quest of questsToStart) {
-            await startQuest(quest);
-        }
-
-        const interval = config.pollingInterval + Math.round(config.pollingJitter * Math.random());
-        setTimeout(() => StartRoutine(), interval);
+        await startNewQuests();
 
         console.log("\nJEWEL balance:", ethers.utils.formatEther(await jewelContract.balanceOf(config.wallet.address)));
         console.log("ONE balance:", ethers.utils.formatEther(await provider.getBalance(config.wallet.address)));
-        
-        console.log(`\nWaiting for ${interval / 60000} minutes...\n`);
 
     } catch (err) {
-        const interval = config.pollingInterval + Math.round(config.pollingJitter * Math.random());
-        console.error(
-            `An error occured. Will attempt to retry in ` +
-                `${interval / 60000} minutes... Error:`,
-            err
-        );
-        setTimeout(() => StartRoutine(), interval);
+        console.error('An error occured:\n', err);
     }
+    console.log(`\nWaiting for ${ minutesInterval } minutes for next attempt\n`);
+    setTimeout(() => StartRoutine(), interval);
 }
 
 // QUESTING FUNCTIONS
 
-async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
+
+async function completeQuests() {
+    console.log("\nChecking for quests...\n");
+    let activeQuests = await questContract.getActiveQuests(
+        config.wallet.address
+    );
+
+    // Display the finish time for any quests in progress
+    let runningQuests = activeQuests.filter(
+        (quest) => quest.completeAtTime >= Math.round(Date.now() / 1000)
+    );
+    runningQuests.forEach((quest) =>
+        console.log(
+            `Quest led by hero ${
+                quest.heroes[0]
+            } is due to complete at ${utils.displayTime(quest.completeAtTime)}`
+        )
+    );
+
+    // Complete any quests that need to be completed
+    let doneQuests = activeQuests.filter(
+        (quest) => !runningQuests.includes(quest)
+    );
+    for (const quest of doneQuests) {
+        await completeQuest(quest.heroes[0]);
+    }
+
+    // // List any non-full stamina in wallet for sale
+    // // After completing quest, send them to Auction
+    // for (heroId of heroesInWallet) {
+    //     heroStamina = await questContract.getCurrentStamina(heroId);
+    //     // console.log(heroStamina.toNumber()) // DEBUGGING
+    //     if (heroStamina.toNumber() < 15 ) {listHeroForSale(heroId)}
+    // }
+}
+
+async function startNewQuests() {
+    const { herosSold, heroesInAuction } = await checkWalletHeroes();
+
+    let activeQuests = await questContract.getActiveQuests(
+        config.wallet.address
+    );
+
     var questsToStart = new Array();
     var questingHeroes = new Array();
 
@@ -163,7 +170,7 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
 
         if (quest.professionHeroes.length > 0) {
             var readyHeroes = await getHeroesWithGoodStamina(
-                heroSold,
+                herosSold,
                 heroesInAuction,
                 questingHeroes,
                 quest,
@@ -182,7 +189,7 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
 
         if (quest.nonProfessionHeroes.length > 0) {
             var readyHeroes = await getHeroesWithGoodStamina(
-                heroSold,
+                herosSold,
                 heroesInAuction,
                 questingHeroes,
                 quest,
@@ -199,12 +206,15 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
             });
         }
     }
+
     // console.log(questsToStart) // DEBUGGING
-    return questsToStart;
+    for (const quest of questsToStart) {
+        await startQuest(quest);
+    }
 }
 
 async function getHeroesWithGoodStamina(
-    heroSold,
+    herosSold,
     heroesInAuction,
     questingHeroes,
     quest,
@@ -225,7 +235,7 @@ async function getHeroesWithGoodStamina(
         : quest.nonProfessionHeroes;
     
     heroes = heroes.filter((h) => !questingHeroes.includes(h));
-    heroes = heroes.filter((h) => !heroSold.includes(h));
+    heroes = heroes.filter((h) => !herosSold.includes(h));
 
     const results = await staminaValues(heroes)
 
@@ -251,9 +261,7 @@ async function getHeroesWithGoodStamina(
         for (heroId of heroesWithGoodStamina){
             if (heroesInAuction.includes(heroId)) {
                 // hero is in auction, cancel the auction
-                await cancelAuction(
-                    heroId
-                )
+                await cancelAuction(heroId)
             }
         }
     }
@@ -505,25 +513,16 @@ async function getUserAuctions(userAddress) {
 async function getUserHeroes(userAddress) {
     var heroesInWallet = new Array()
     try {
-        console.log(
-            `Fetching user heroes in wallet / questing`
-        )
+        console.log(`Fetching user heroes in wallet / questing`)
 
-        bigNumberHeroList = await heroContract.getUserHeroes(
-            userAddress
-        )
+        bigNumberHeroList = await heroContract.getUserHeroes(userAddress)
         for (heroId of bigNumberHeroList) {
-            heroesInWallet.push(
-                heroId.toNumber()
-            )
+            heroesInWallet.push(heroId.toNumber())
         }
         console.log(heroesInWallet)
 
     } catch (err) {
-        console.warn(
-            `Error in getting user auctions - this will be retried next polling interval`
-        );
-        // console.log(err) // DEBUGGING
+        console.error(`Error in getting user heros:\n`, err);
     } 
     return heroesInWallet
 
