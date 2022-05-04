@@ -62,22 +62,36 @@ async function StartRoutine() {
     try {
         
         console.log("\nFetching all user heroes...\n");
-        heroesInAuction = await getUserAuctions(config.wallet.address)
-        heroesInWallet = await getUserHeroes(config.wallet.address)
+        heroesInAuction = utils.sortNumArray(await getUserAuctions(config.wallet.address))
+        heroesInWallet = utils.sortNumArray(await getUserHeroes(config.wallet.address))
 
         var curentUserHeroes = heroesInAuction.concat(heroesInWallet)
-        console.log('Current User Heroes')
-        // console.log(curentUserHeroes)
 
-        var lastUpdatedUserHero = config.lastUpdatedUserHeroes
-        // console.log(lastUpdatedUserHero)
+        var lastUpdatedUserHero = new Array
+        for (key of Object.keys(config.heroes)) {lastUpdatedUserHero.push(parseInt(key))}
 
-        var heroSold = lastUpdatedUserHero.filter(x => !curentUserHeroes.includes(x));
-        var heroNew = curentUserHeroes.filter(x => !lastUpdatedUserHero.includes(x));
+        var heroSold = utils.sortNumArray(lastUpdatedUserHero.filter(x => !curentUserHeroes.includes(x)));
+        var heroNew = utils.sortNumArray(curentUserHeroes.filter(x => !lastUpdatedUserHero.includes(x)));
 
-        console.log(`Hero(s) sold : ${heroSold}`);
-        console.log(`New hero(s) : ${heroNew}`);
+        console.log(`\nHero(s) sold : `);
+        console.log(heroSold)
+        console.log(`New hero(s) : `);
+        console.log(heroNew)
 
+        // check for heroes with full xp
+        var fullXpHeroes = new Array
+
+        for (heroId of curentUserHeroes) {
+            heroDetails = await heroContract.getHero(heroId)
+            heroLevel = heroDetails[3][3]
+            heroXp = heroDetails[3][4]
+            if (heroXp.toNumber() == (heroLevel+1)*1000) {
+                fullXpHeroes.push(heroId)
+            }
+        }
+        
+        console.log(`Full Xp Heroes : `);
+        console.log(fullXpHeroes)
 
         console.log("\nChecking for quests...\n");
         let activeQuests = await questContract.getActiveQuests(
@@ -316,8 +330,6 @@ async function startQuestBatch(quest, questingGroup) {
     } else {
         // GARDENING use startQuestWithData contract function
         try {
-            console.log(quest.poolId)
-            console.log(questingGroup)
             questData = [quest.poolId, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS]
 
             console.log(
@@ -364,7 +376,7 @@ async function completeQuest(heroId) {
                     .completeQuest(heroId, callOptions),
             2
         );
-        console.log(`\n Completed quest led by hero ${heroId} \n`);
+        console.log(`\nCompleted quest led by hero ${heroId} \n`);
     } catch (err) {
         console.warn(
             `Error completing quest for heroId ${heroId} - this will be retried next polling interval`
@@ -376,18 +388,20 @@ async function completeQuest(heroId) {
 
 async function listHeroForSale(heroId) {
     // automatically follows the price in config file
-    try {
-        heroListingPrice = config.heroListingPrice[heroId]
-        // console.log(heroListingPrice) // DEBUGGING
-        createAuction(
-            heroId,
-            heroListingPrice,
-            heroListingPrice
-        )
-    } catch (err) {
-        console.warn(
-            `Error getting ${heroId} listing price - this will be retried next polling interval`
-        );
+    if (config.heroes[heroId]["forSale"]) {
+        try {
+            heroListingPrice = config.heroes[heroId]["listingPrice"]
+            // console.log(heroListingPrice) // DEBUGGING
+            createAuction(
+                heroId,
+                heroListingPrice,
+                heroListingPrice
+            )
+        } catch (err) {
+            console.warn(
+                `Error getting ${heroId} listing price - this will be retried next polling interval`
+            );
+        }
     }
 }
 
@@ -397,9 +411,6 @@ async function createAuction(heroId, startingPriceEther, endingPriceEther, durat
 
     var startingPriceWei = BigInt(startingPriceEther * ethers.constants.WeiPerEther)
     var endingPriceWei = BigInt(endingPriceEther * ethers.constants.WeiPerEther)
-
-    console.log(heroId)
-    console.log(startingPriceWei)
 
     try {
         console.log(

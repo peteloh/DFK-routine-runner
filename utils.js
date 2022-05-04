@@ -15,3 +15,10 @@ exports.displayTime = function (timestamp) {
     var sec = a.getSeconds();
     return hour + ":" + min + ":" + sec;
 }
+
+exports.sortNumArray = function (numArray) {
+    numArray.sort(function(a, b) {
+    return a - b;
+    });
+    return numArray
+}
