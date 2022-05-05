@@ -1,4 +1,4 @@
-const config = require("./config.json"); 
+const config = require("./config_v2.json"); 
 
 // WEB3 
 

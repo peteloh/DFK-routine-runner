@@ -4,9 +4,9 @@ const readline = require("readline");
 const ethers = require("ethers");
 
 // import json files
-const config = require("./config.json"); 
-const questContractAbi = require("./abi/quest_contract.json");
-const masterGardenerAbi = require("./abi/master_gardener.json");
+const config = require("./config_v2.json"); 
+const questContractV1Abi = require("./abi/quest_contract_v1.json");
+const questContractV2Abi = require("./abi/quest_contract_v2.json");
 const auctionAbi = require("./abi/auctions.json");
 const heroAbi = require("./abi/hero.json");
 
@@ -19,11 +19,18 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 async function main() {
     try {
-        // Connect to questContract through rpc
+        // Connect to questContractV1 through rpc
         provider = new ethers.providers.JsonRpcProvider(utils.getRpc());
-        questContract = new ethers.Contract(
-            config.questContract,
-            questContractAbi,
+        questContractV1 = new ethers.Contract(
+            config.questContractV1,
+            questContractV1Abi,
+            provider
+        );
+        // Connect to questContractV2 through rpc
+        provider = new ethers.providers.JsonRpcProvider(utils.getRpc());
+        questContractV2 = new ethers.Contract(
+            config.questContractV2,
+            questContractV2Abi,
             provider
         );
         // Connect to heroContract through rpc
@@ -94,40 +101,59 @@ async function StartRoutine() {
         console.log(fullXpHeroes)
 
         console.log("\nChecking for quests...\n");
-        let activeQuests = await questContract.getActiveQuests(
+        let activeQuestsV1 = await questContractV1.getActiveQuests(
+            config.wallet.address
+        );
+        let activeQuestsV2 = await questContractV2.getAccountActiveQuests(
             config.wallet.address
         );
 
         // Display the finish time for any quests in progress
-        let runningQuests = activeQuests.filter(
+        let runningQuestsV1 = activeQuestsV1.filter(
             (quest) => quest.completeAtTime >= Math.round(Date.now() / 1000)
         );
-        runningQuests.forEach((quest) =>
+        runningQuestsV1.forEach((quest) =>
             console.log(
-                `Quest led by hero ${
+                `QuestV1 led by hero ${
+                    quest.heroes[0]
+                } is due to complete at ${utils.displayTime(quest.completeAtTime)}`
+            )
+        );
+        let runningQuestsV2 = activeQuestsV2.filter(
+            (quest) => quest.completeAtTime >= Math.round(Date.now() / 1000)
+        );
+        runningQuestsV2.forEach((quest) =>
+            console.log(
+                `QuestV2 led by hero ${
                     quest.heroes[0]
                 } is due to complete at ${utils.displayTime(quest.completeAtTime)}`
             )
         );
 
         // Complete any quests that need to be completed
-        let doneQuests = activeQuests.filter(
-            (quest) => !runningQuests.includes(quest)
+        let doneQuestsV1 = activeQuestsV1.filter(
+            (quest) => !runningQuestsV1.includes(quest)
         );
-        for (const quest of doneQuests) {
-            await completeQuest(quest.heroes[0]);
+        for (const quest of doneQuestsV1) {
+            await completeQuestV1(quest.heroes[0]);
+        }
+        let doneQuestsV2 = activeQuestsV2.filter(
+            (quest) => !runningQuestsV2.includes(quest)
+        );
+        for (const quest of doneQuestsV2) {
+            await completeQuestV2(quest.heroes[0]);
         }
 
         // List any non-full stamina in wallet for sale
         // After completing quest, send them to Auction
         for (heroId of heroesInWallet) {
-            heroStamina = await questContract.getCurrentStamina(heroId);
+            heroStamina = await questContractV2.getCurrentStamina(heroId);
             // console.log(heroStamina.toNumber()) // DEBUGGING
             if (heroStamina.toNumber() < 20) {listHeroForSale(heroId)}
         }
-        
         // Start any quests needing to start
-        let questsToStart = await getQuestsToStart(activeQuests, heroSold, heroesInAuction);
+        let allActiveQuests = activeQuestsV1.concat(activeQuestsV2)
+        let questsToStart = await getQuestsToStart(allActiveQuests, heroSold, heroesInAuction);
         for (const quest of questsToStart) {
             await startQuest(quest);
         }
@@ -156,7 +182,7 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
     );
 
     for (const quest of config.quests) {
-        if (quest.name == "Foraging" || quest.name == "Fishing") {
+        if (!quest.name.includes("Gardening") && !quest.name.includes("Mining")) {
             var questAttempts = config.professionMaxAttempts[quest.name]
         } else {
             var questAttempts = 1
@@ -177,6 +203,7 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
                 professional: true,
                 heroes: readyHeroes,
                 attempts: questAttempts,
+                questLevel: quest.questLevel,
                 poolId: quest.poolId,
             });
         }
@@ -196,6 +223,7 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
                 professional: false,
                 heroes: readyHeroes,
                 attempts: questAttempts,
+                questLevel: quest.questLevel,
                 poolId: quest.poolId,
             });
         }
@@ -213,12 +241,11 @@ async function getHeroesWithGoodStamina(
     professional
 ) {
     var minStamina
-    if  (quest.name == "Fishing" || quest.name == "Foraging") {
+
+    if  (quest.name.includes("Gardening")) {config.minStamina.gardening;} 
+    else if (quest.name.includes("Mining")) {config.minStamina.mining;}
+    else {
         minStamina = professional ? 5 * maxAttempts : 7 * maxAttempts;
-    } else {
-        // Both gardening and mining costs 1 stamina per tick, profersional or not.
-        // Set to be ready at 15 stamina
-        minStamina = 25;
     }
     
     let heroes = professional
@@ -229,7 +256,7 @@ async function getHeroesWithGoodStamina(
     heroes = heroes.filter((h) => !heroSold.includes(h));
 
     const promises = heroes.map((hero) => {
-        return questContract.getCurrentStamina(hero);
+        return questContractV2.getCurrentStamina(hero);
     });
 
     const results = await Promise.all(promises);
@@ -304,18 +331,36 @@ async function startQuestBatch(quest, questingGroup) {
                     quest.professional ? "Professional" : "Non-professional"
                 } ${quest.name} quest with hero(es) ${questingGroup}.`
             );
-            await tryTransaction(
-                () =>
-                    questContract
-                        .connect(wallet)
-                        .startQuest(
-                            questingGroup,
-                            quest.address,
-                            quest.attempts,
-                            callOptions
-                        ),
-                2
-            );
+            if (quest.name.includes("Mining")) {
+                // Mining quest still uses questContractV1
+                await tryTransaction(
+                    () =>
+                        questContractV1 
+                            .connect(wallet)
+                            .startQuest(
+                                questingGroup,
+                                quest.address,
+                                quest.attempts,
+                                callOptions
+                            ),
+                    2
+                );
+            } else {
+                // The rest uses questContractV2
+                await tryTransaction(
+                    () =>
+                        questContractV2 
+                            .connect(wallet)
+                            .startQuest(
+                                questingGroup,
+                                quest.address,
+                                quest.attempts,
+                                quest.questLevel,
+                                callOptions
+                            ),
+                    2
+                );
+            }
             console.log(
                 `Started ${
                     quest.professional ? "Professional" : "Non-professional"
@@ -323,7 +368,7 @@ async function startQuestBatch(quest, questingGroup) {
             );
         } catch (err) {
             console.warn(
-                `Error starting non-gardening quest - this will be retried next polling interval`
+                `Error starting ${quest.name} quest - this will be retried next polling interval`, err
             );
             // console.log(err) // DEBUGGING
         }
@@ -337,9 +382,10 @@ async function startQuestBatch(quest, questingGroup) {
                     quest.professional ? "Professional" : "Non-professional"
                 } ${quest.name} quest with hero(es) ${questingGroup}.`
             );
+            // Gardening Quest still uses questContractV1
             await tryTransaction(
                 () =>
-                    questContract
+                    questContractV1 
                         .connect(wallet)
                         .startQuestWithData(
                             questingGroup,
@@ -357,7 +403,7 @@ async function startQuestBatch(quest, questingGroup) {
             );
         } catch (err) {
             console.warn(
-                `Error starting gardening quest - this will be retried next polling interval`
+                `Error starting gardening quest - this will be retried next polling interval`, err
             );
             // console.log(err) // DEBUGGING
         }
@@ -365,13 +411,32 @@ async function startQuestBatch(quest, questingGroup) {
     
 }
 
-async function completeQuest(heroId) {
+async function completeQuestV1(heroId) {
     try {
         console.log(`Completing quest led by hero ${heroId}`);
 
         let receipt = await tryTransaction(
             () =>
-                questContract
+                questContractV1
+                    .connect(wallet)
+                    .completeQuest(heroId, callOptions),
+            2
+        );
+        console.log(`\nCompleted quest led by hero ${heroId} \n`);
+    } catch (err) {
+        console.warn(
+            `Error completing quest for heroId ${heroId} - this will be retried next polling interval`
+        );
+    }
+}
+
+async function completeQuestV2(heroId) {
+    try {
+        console.log(`Completing quest led by hero ${heroId}`);
+
+        let receipt = await tryTransaction(
+            () =>
+                questContractV2
                     .connect(wallet)
                     .completeQuest(heroId, callOptions),
             2

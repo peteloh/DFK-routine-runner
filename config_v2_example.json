@@ -5,6 +5,7 @@
     },
 
     "professionMaxAttempts": {
+        "STR": 5, "AGI": 5, "END": 5, "WIS": 5, "DEX": 5, "VIT": 5, "INT": 5, "LCK": 5,
         "Fishing": 5,
         "Foraging": 5,
         "Gardening": 1,
@@ -13,6 +14,7 @@
     },
 
     "nonProfessionMaxAttempts": {
+        "STR": 5, "AGI": 5, "END": 5, "WIS": 5, "DEX": 5, "VIT": 5, "INT": 5, "LCK": 5,
         "Fishing": 3,
         "Foraging": 3,
         "Gardening": 1,
@@ -21,6 +23,7 @@
     },
 
     "maxQuestGroupSize" : {
+        "STR": 5, "AGI": 5, "END": 5, "WIS": 5, "DEX": 5, "VIT": 5, "INT": 5, "LCK": 5,
         "Fishing": 6,
         "Foraging": 6,
         "Gardening": 1,
@@ -31,6 +34,7 @@
     "pollingInterval": "60000",
 
     "heroes": {
+        "delete me" : "note: Put ALL your heroIds (including questing only but set forSale as false) here",
         "37271": {"forSale": true,"listingPrice": 750},
         "49040": {"forSale": true,"listingPrice": 250},
         "59353": {"forSale": true,"listingPrice": 300},
@@ -55,35 +59,87 @@
 
     "quests": [
         {
-            "name": "Strength",
-            "professional": true,
-            "questLevel": 0,
+            "name": "STR",
+            "questLevel": 1,
             "poolId": null,
-            "professionHeroes": [86979, 124852, 125145],
+            "professionHeroes": [86979, 112548, 122449, 124759],
             "nonProfessionHeroes": [],
-            "contractAddress": "0xE259e8386d38467f0E7fFEdB69c3c9C935dfaeFc"
+            "contractAddress": "0xf60AF3a32Bb94e395E17C70aB695d968F37Bd2e4"
+        },
+        {
+            "name": "AGI",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xFA20B218927B0f57a08196743488c7C790a5625B"
+        },
+        {
+            "name": "END",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [49040, 129625, 116164, 37271],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xCb594A24D802cdF65000A84dC0059dde11c9d15f"
+        },
+        {
+            "name": "WIS",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [71631, 116183, 67570, 59353, 127094, 136557],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x347097454fA1931A4e80dcDebb31F29FC355CbCE"
+        },
+        {
+            "name": "DEX",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0xe03fd4e2F6421b1251297240cE5248508C9104eD"
+        },
+        {
+            "name": "VIT",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x2174bBeFbEFBD766326a7C7538f93a78Db3eD449"
+        },
+        {
+            "name": "INT",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [117484],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x6176EedE1AE9127D59266f197Ad598653E4F8c92"
+        },
+        {
+            "name": "LCK",
+            "questLevel": 1,
+            "poolId": null,
+            "professionHeroes": [124852, 125145],
+            "nonProfessionHeroes": [],
+            "contractAddress": "0x13E74E4E64805E7fdA381C9BEF1e77cd16086E56"
         },
         {
             "name": "Fishing",
-            "professional": true,
             "questLevel": 0,
             "poolId": null,
-            "professionHeroes": [86979, 124852, 125145],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xE259e8386d38467f0E7fFEdB69c3c9C935dfaeFc"
         },
         {
             "name": "Foraging",
-            "professional": true,
             "questLevel": 0,
             "poolId": null,
-            "professionHeroes": [71631, 116183, 127094],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0x3132c76acF2217646fB8391918D28a16bD8A8Ef4"
         },
         {
             "name": "JEWELMining",
-            "professional": true,
             "questLevel": 0,
             "poolId": null,
             "professionHeroes": [],
@@ -92,19 +148,17 @@
         },
         {
             "name": "GoldMining",
-            "professional": true,
             "questLevel": 0,
             "poolId": null,
-            "professionHeroes": [112548, 116164, 117394, 122449, 124759, 129625],
+            "professionHeroes": [117394],
             "nonProfessionHeroes": [],
             "contractAddress": "0x569E6a4c2e3aF31B337Be00657B4C040C828Dd73"
         },
         {
             "name": "Gardening-JEWEL-ONE",
-            "professional": true,
             "questLevel": 0,
             "poolId": 1,
-            "professionHeroes": [67570],
+            "professionHeroes": [80335],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
@@ -113,25 +167,23 @@
             "professional": true,
             "questLevel": 0,
             "poolId": 2,
-            "professionHeroes": [49040],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
         {
             "name": "Gardening-JEWEL-bscBNB",
-            "professional": true,
             "questLevel": 0,
             "poolId": 3,
-            "professionHeroes": [37271],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
         {
             "name": "Gardening-JEWEL-1ETH",
-            "professional": true,
             "questLevel": 0,
             "poolId": 4,
-            "professionHeroes": [59353],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
@@ -146,7 +198,6 @@
         },
         {
             "name": "Gardening-JEWEL-1USDC",
-            "professional": true,
             "questLevel": 0,
             "poolId": 7,
             "professionHeroes": [],
@@ -155,16 +206,14 @@
         },
         {
             "name": "Gardening-JEWEL-1WBTC",
-            "professional": true,
             "questLevel": 0,
             "poolId": 8,
-            "professionHeroes": [117484],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
         {
             "name": "Gardening-JEWEL-1ETH",
-            "professional": true,
             "questLevel": 0,
             "poolId": 9,
             "professionHeroes": [],
@@ -173,7 +222,6 @@
         },
         {
             "name": "Gardening-ONE-1USDC",
-            "professional": true,
             "questLevel": 0,
             "poolId": 11,
             "professionHeroes": [],
@@ -182,7 +230,6 @@
         },
         {
             "name": "Gardening-1WBTC-1ETH",
-            "professional": true,
             "questLevel": 0,
             "poolId": 12,
             "professionHeroes": [],
@@ -191,7 +238,6 @@
         },
         {
             "name": "Gardening-JEWEL-AVAX",
-            "professional": true,
             "questLevel": 0,
             "poolId": 16,
             "professionHeroes": [],
@@ -200,7 +246,6 @@
         },
         {
             "name": "Gardening-JEWEL-FTM",
-            "professional": true,
             "questLevel": 0,
             "poolId": 17,
             "professionHeroes": [],
@@ -209,7 +254,6 @@
         },
         {
             "name": "Gardening-JEWEL-LUNA",
-            "professional": true,
             "questLevel": 0,
             "poolId": 18,
             "professionHeroes": [],
@@ -218,7 +262,6 @@
         },
         {
             "name": "Gardening-JEWEL-WMATIC",
-            "professional": true,
             "questLevel": 0,
             "poolId": 19,
             "professionHeroes": [],
@@ -245,7 +288,8 @@
         "1WBTC-1ETH" : "0x997f00485B238c83f7e58C2Ea1866DFD79f04A4b"
     },
 
-    "questContract": "0x5100Bd31b822371108A0f63DCFb6594b9919Eaf4",
+    "questContractV1": "0x5100Bd31b822371108A0f63DCFb6594b9919Eaf4",
+    "questContractV2": "0xAa9a289ce0565E4D6548e63a441e7C084E6B52F6",
     "heroContract": "0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c",
     "masterGardenerContract": "0xDB30643c71aC9e2122cA0341ED77d09D5f99F924",
     "auctionsContract": "0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892",
