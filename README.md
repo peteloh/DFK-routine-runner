@@ -54,4 +54,6 @@ Listen - ultimately, you're running some random code off of the internet, writte
 
 If you've got this far and are still considering using the app, congratulations my friend. You're tougher than an Ironscale, and will be auto-questing faster than a Sailfish. It's a beautiful and powerful thing. Some say, even more beautiful and powerful than a Shimmerscale...
 
-
+## Tip Jar
+If you're finding DFKRoutineRunner useful, any tips are gratefully received. 
+Tip jar: 0xC2cfCDa0cd983C5E920E053F0985708c5e420f2F
