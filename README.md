@@ -2,23 +2,25 @@
 This code builds upon SansegoTek's DFKQuestRunner that developed a great framework for automatic fishing / foraging questing with many tweakable parameters in the config file.
 The following is the link to the github repo: https://github.com/SansegoTek/DFKQuestRunner
 
-## Features and Imporvements
-DFKRoutineRunner adds 2 main parts to SansegoTek's DFKQuestRunner:
-1. Adds the support for automated gardening, jewel mining and gold mining.
-2. Automatica list heroes for sale
+## Main Features
+1. Automatic questing for both questV1 and questV2
+    - Gardening and Mining quests still uses QuestCoreV1 contracts
+    - Training quests, Foraging and Fishing quests uses QuestCoreV2 contracts
+2. Automatically list heroes for sale
     - When hero with stamina less than 20, it will be listed on auction house based "heroListingPrice" written in config file
     - When hero listed for sale has full stamina, it will automatically delist to do quest.
     - When any hero has been sold / there is new hero in the account, it will be updated in "newHero" / "heroSold" log in the terminal.
 
-How to setup config file:
-- put your public address in the wallet.address part of config
-- put heroId into the the [] of different type of "quest".
-- update "lastUpdatedUserHeroes" to match the heroes placed in the quest routine
-- update listing price for each hero (there is currently no function to turn this off yet)
-
-After setting up the config file, to run the program clone this repo, install node.js and run 
-    node routine_runner.js
-
+## Setup
+1. Clone this repo
+2. Setup Config File
+    - Fill in `config_v2_example.json` and rename it to `config_v2.json` (the code detects `config_v2.json` file)
+    - put your public address in the wallet.address part of config
+    - put heroId into the the [] of different type of "quest".
+    - update "heroes" to match the heroes placed in the quest routine 
+    - set forSale to false if you dont want it to be automatically listed on auction
+    - set listing price for each hero
+3. Run `node routine_runner_v2.js`
 
 ## Private Keys - Written by SansegoTek
 Private Keys - Proceed with EXTREME CAUTION!
