@@ -22,6 +22,10 @@ The following is the link to the github repo: https://github.com/SansegoTek/DFKQ
     - set listing price for each hero
 3. Run `node routine_runner_v2.js`
 
+## Future Updates
+1. Automatic levelling (prefined stats to choose)
+2. Crystalvale support (multichain code)
+
 ## Private Keys - Written by SansegoTek
 Private Keys - Proceed with EXTREME CAUTION!
 I'll be very blunt about this - if you are not extremely careful using this app, you run the risk of losing the entire contents of your wallet. Yes, that's right - every single hero, JEWEL, Egg, Goldvein etc that you've worked so hard to accumulate - all gone. Not only that, but any ONE, ETH, NFTs etc that reside in that wallet - somebody else's property. Scared? Good!
