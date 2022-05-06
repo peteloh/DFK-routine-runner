@@ -182,10 +182,10 @@ async function getQuestsToStart(activeQuests, heroSold, heroesInAuction) {
     );
 
     for (const quest of config.quests) {
-        if (!quest.name.includes("Gardening") && !quest.name.includes("Mining")) {
-            var questAttempts = config.professionMaxAttempts[quest.name]
-        } else {
+        if (quest.name.includes("Gardening") || quest.name.includes("Mining")) {
             var questAttempts = 1
+        } else {
+            var questAttempts = config.professionMaxAttempts[quest.name]
         }
 
         if (quest.professionHeroes.length > 0) {
@@ -241,9 +241,12 @@ async function getHeroesWithGoodStamina(
     professional
 ) {
     var minStamina
-
-    if  (quest.name.includes("Gardening")) {config.minStamina.gardening;} 
-    else if (quest.name.includes("Mining")) {config.minStamina.mining;}
+    if  (quest.name.includes("Gardening")) {
+        minStamina = config.minStamina.gardening;
+    } 
+    else if (quest.name.includes("Mining")) {
+        minStamina = config.minStamina.mining;
+    }
     else {
         minStamina = professional ? 5 * maxAttempts : 7 * maxAttempts;
     }
@@ -263,6 +266,7 @@ async function getHeroesWithGoodStamina(
 
     const heroesWithGoodStaminaRaw = results.map((value, index) => {
         const stamina = Number(value);
+        console.log(stamina, minStamina)
         if (stamina >= minStamina) {
             return heroes[index];
         }
