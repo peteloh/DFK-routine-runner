@@ -4,11 +4,11 @@ The following is the link to the github repo: https://github.com/SansegoTek/DFKQ
 
 ## Main Features
 1. Automatic questing for both questV1 and questV2
-    - Gardening and Mining quests still uses QuestCoreV1 contracts
-    - Training quests, Foraging and Fishing quests uses QuestCoreV2 contracts
+    - Gardening and Mining quests still use QuestCoreV1 contracts
+    - Training quests, Foraging and Fishing quests use QuestCoreV2 contracts
 2. Automatically list heroes for sale
-    - When hero with stamina less than 20, it will be listed on auction house based "heroListingPrice" written in config file
-    - When hero listed for sale has full stamina, it will automatically delist to do quest.
+    - Any hero idling in the wallet with stamina less than 20 and forSale is true will be listed according to the price in config file.
+    - When hero listed for sale has `minStamina` for quest, it will automatically get delisted to do quest.
     - When any hero has been sold / there is new hero in the account, it will be updated in "newHero" / "heroSold" log in the terminal.
 
 ## Setup
