@@ -250,7 +250,7 @@ async function getHeroesWithGoodStamina(
     else {
         minStamina = professional ? 5 * maxAttempts : 7 * maxAttempts;
     }
-    
+
     let heroes = professional
         ? quest.professionHeroes
         : quest.nonProfessionHeroes;
@@ -266,7 +266,6 @@ async function getHeroesWithGoodStamina(
 
     const heroesWithGoodStaminaRaw = results.map((value, index) => {
         const stamina = Number(value);
-        console.log(stamina, minStamina)
         if (stamina >= minStamina) {
             return heroes[index];
         }
