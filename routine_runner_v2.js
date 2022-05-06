@@ -149,7 +149,7 @@ async function StartRoutine() {
         for (heroId of heroesInWallet) {
             heroStamina = await questContractV2.getCurrentStamina(heroId);
             // console.log(heroStamina.toNumber()) // DEBUGGING
-            if (heroStamina.toNumber() < 20) {listHeroForSale(heroId)}
+            if (heroStamina.toNumber() < 20) {await listHeroForSale(heroId)}
         }
         // Start any quests needing to start
         let allActiveQuests = activeQuestsV1.concat(activeQuestsV2)
@@ -283,9 +283,7 @@ async function getHeroesWithGoodStamina(
         for (heroId of heroesWithGoodStamina){
             if (heroesInAuction.includes(heroId)) {
                 // hero is in auction, cancel the auction
-                await cancelAuction(
-                    heroId
-                )
+                await cancelAuction(heroId)
             }
         }
     }
@@ -317,7 +315,7 @@ async function startQuest(quest) {
         }
     } catch (err) {
         console.warn(
-            `Error determining questing group - this will be retried next polling interval`
+            `Error determining questing group \n`, err
         );
     }
 }
@@ -422,10 +420,10 @@ async function completeQuestV1(heroId) {
                     .completeQuest(heroId, callOptions),
             2
         );
-        console.log(`\nCompleted quest led by hero ${heroId} \n`);
+        console.log(`Completed!\n`);
     } catch (err) {
         console.warn(
-            `Error completing quest for heroId ${heroId} - this will be retried next polling interval`
+            `Error completing quest for heroId ${heroId} \n`, err
         );
     }
 }
@@ -441,10 +439,10 @@ async function completeQuestV2(heroId) {
                     .completeQuest(heroId, callOptions),
             2
         );
-        console.log(`\nCompleted quest led by hero ${heroId} \n`);
+        console.log(`\nCompleted!`);
     } catch (err) {
         console.warn(
-            `Error completing quest for heroId ${heroId} - this will be retried next polling interval`
+            `Error completing quest for heroId ${heroId} \n`, err
         );
     }
 }
@@ -457,14 +455,14 @@ async function listHeroForSale(heroId) {
         try {
             heroListingPrice = config.heroes[heroId]["listingPrice"]
             // console.log(heroListingPrice) // DEBUGGING
-            createAuction(
+            await createAuction(
                 heroId,
                 heroListingPrice,
                 heroListingPrice
             )
         } catch (err) {
             console.warn(
-                `Error getting ${heroId} listing price - this will be retried next polling interval`
+                `Error getting ${heroId} listing price \n`, err
             );
         }
     }
@@ -479,7 +477,7 @@ async function createAuction(heroId, startingPriceEther, endingPriceEther, durat
 
     try {
         console.log(
-            `Listing Hero ${heroId} @ price = ${startingPriceEther} Jewels`
+            `\nListing Hero ${heroId} @ price = ${startingPriceEther} Jewels`
         );
         await tryTransaction(
             () =>
@@ -496,11 +494,11 @@ async function createAuction(heroId, startingPriceEther, endingPriceEther, durat
             2
         );
         console.log(
-            `Listed Hero ${heroId} @ price = ${startingPriceEther} Jewels`
+            `Listed!`
         );
     } catch (err) {
         console.warn(
-            `Error in auction listing - this will be retried next polling interval`
+            `Error during listing..\n`, err
         );
         // console.log(err) // DEBUGGING
     } 
@@ -510,7 +508,7 @@ async function createAuction(heroId, startingPriceEther, endingPriceEther, durat
 async function cancelAuction(heroId) {
     try {
         console.log(
-            `Cancelling Hero ${heroId} Listing`
+            `\nCancelling Hero ${heroId} Listing`
         );
         await tryTransaction(
             () =>
@@ -523,15 +521,13 @@ async function cancelAuction(heroId) {
             2
         );
         console.log(
-            `Cancelled Hero ${heroId} Listing`
+            `Cancelled!`
         );
     } catch (err) {
         console.warn(
-            `Error in cancalling listed auction - this will be retried next polling interval`
+            `Error in cancalling ${heroId} auction \n`, err
         );
-        // console.log(err) // DEBUGGING
     } 
-
 }
 
 async function getUserAuctions(userAddress) {
@@ -553,7 +549,7 @@ async function getUserAuctions(userAddress) {
         
     } catch (err) {
         console.warn(
-            `Error in getting user auctions - this will be retried next polling interval`
+            `Error in getting user auctions \n`, err
         );
         // console.log(err) // DEBUGGING
     } 
@@ -582,7 +578,7 @@ async function getUserHeroes(userAddress) {
 
     } catch (err) {
         console.warn(
-            `Error in getting user auctions - this will be retried next polling interval`
+            `Error in getting user heroes \n`, err
         );
         // console.log(err) // DEBUGGING
     } 
