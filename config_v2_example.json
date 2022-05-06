@@ -1,6 +1,6 @@
 {
     "wallet": {
-        "address": "put your wallet address here",
+        "address": "your 0x address here",
         "encryptedWalletPath": "./w.json"
     },
 
@@ -27,42 +27,39 @@
         "Fishing": 6,
         "Foraging": 6,
         "Gardening": 1,
-        "JEWELMining": 2,
+        "JEWELMining": 1,
         "GoldMining": 5
     },
 
     "minStamina" : {
-        "gardening" : 15,
-        "mining" : 15
+        "gardening" : 25,
+        "mining" : 25
     },
 
     "pollingInterval": "60000",
 
     "heroes": {
-        "delete me" : "note: Put ALL your heroIds (including questing only but set forSale as false) here",
         "37271": {"forSale": true ,"listingPrice": 750},
         "49040": {"forSale": true ,"listingPrice": 250},
         "59353": {"forSale": true ,"listingPrice": 300},
         "67570": {"forSale": true ,"listingPrice": 600},
-        "65456": {"forSale": false,"listingPrice": 1000},
+        "65456": {"forSale": true ,"listingPrice": 300},
         "71631": {"forSale": true ,"listingPrice": 550},
-        "80331": {"forSale": false,"listingPrice": 1000},
+        "80331": {"forSale": true ,"listingPrice": 300},
         "80335": {"forSale": true ,"listingPrice": 325},
-        "81764": {"forSale": false,"listingPrice": 1000},
+        "81764": {"forSale": true ,"listingPrice": 450},
         "86979": {"forSale": true ,"listingPrice": 120},
-        "112548": {"forSale": true ,"listingPrice": 325},
+        "112548": {"forSale": true ,"listingPrice": 350},
         "116164": {"forSale": true ,"listingPrice": 300},
         "116183": {"forSale": true ,"listingPrice": 400},
         "117394": {"forSale": true ,"listingPrice": 450},
         "117484": {"forSale": true ,"listingPrice": 400},
         "122449": {"forSale": true ,"listingPrice": 275},
-        "124759": {"forSale": true ,"listingPrice": 325},
-        "124852": {"forSale": true ,"listingPrice": 150},
-        "125145": {"forSale": true ,"listingPrice": 160},
+        "124759": {"forSale": true ,"listingPrice": 350},
+        "124852": {"forSale": true ,"listingPrice": 200},
         "127094": {"forSale": true ,"listingPrice": 1550},
-        "129625": {"forSale": true ,"listingPrice": 200},
+        "129625": {"forSale": true ,"listingPrice": 250},
         "136557": {"forSale": true ,"listingPrice": 1750}
-        
     },
 
     "quests": [
@@ -118,7 +115,7 @@
             "name": "INT",
             "questLevel": 1,
             "poolId": null,
-            "professionHeroes": [117484],
+            "professionHeroes": [117484, 80335],
             "nonProfessionHeroes": [],
             "contractAddress": "0x6176EedE1AE9127D59266f197Ad598653E4F8c92"
         },
@@ -126,7 +123,7 @@
             "name": "LCK",
             "questLevel": 1,
             "poolId": null,
-            "professionHeroes": [124852, 125145],
+            "professionHeroes": [124852],
             "nonProfessionHeroes": [],
             "contractAddress": "0x13E74E4E64805E7fdA381C9BEF1e77cd16086E56"
         },
@@ -152,7 +149,7 @@
             "poolId": null,
             "professionHeroes": [81764, 80331, 116164, 117394],
             "nonProfessionHeroes": [],
-            "contractAddress": "0x569E6a4c2e3aF31B337Be00657B4C040C828Dd73"
+            "contractAddress": "0x6FF019415Ee105aCF2Ac52483A33F5B43eaDB8d0"
         },
         {
             "name": "GoldMining",
@@ -166,7 +163,7 @@
             "name": "Gardening-JEWEL-ONE",
             "questLevel": 0,
             "poolId": 1,
-            "professionHeroes": [80335],
+            "professionHeroes": [],
             "nonProfessionHeroes": [],
             "contractAddress": "0xe4154B6E5D240507F9699C730a496790A722DF19"
         },
