@@ -296,11 +296,12 @@ async function getHeroesWithGoodStamina(
 
 async function startQuest(quest) {
     try {
+        var minQuestGroupSize = config.minQuestGroupSize[quest.name] || 1
         var maxQuestGroupSize
         if (quest.name.includes("Gardening")) {
             maxQuestGroupSize = 1;
         } else {
-            maxQuestGroupSize = config.maxQuestGroupSize[quest.name]
+            maxQuestGroupSize = config.maxQuestGroupSize[quest.name] || minQuestGroupSize;
         }
 
         // console.log(quest) // DEBUGGING
@@ -311,7 +312,7 @@ async function startQuest(quest) {
                 groupStart,
                 groupStart + maxQuestGroupSize
             );
-            if (questingGroup.length === 0) break;
+            if (questingGroup.length < minQuestGroupSize) break;
             // console.log(questingGroup) // DEBUGGING
             await startQuestBatch(quest, questingGroup);
             batch++;
