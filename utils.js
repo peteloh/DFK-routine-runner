@@ -3,7 +3,7 @@ const config = require("./config_v2.json");
 // WEB3 
 
 exports.getRpc = function () {
-    return config.useBackupRpc ? config.rpc.poktRpc : config.rpc.harmonyRpc;
+    return  config.rpc[config.selectedRpc];
 }
 
 // OTHER 

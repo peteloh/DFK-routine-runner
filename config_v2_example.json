@@ -44,7 +44,7 @@
         "59353": {"forSale": true ,"listingPrice": 300},
         "67570": {"forSale": true ,"listingPrice": 600},
         "65456": {"forSale": true ,"listingPrice": 300},
-        "71631": {"forSale": true ,"listingPrice": 550},
+        "71631": {"forSale": true ,"listingPrice": 500},
         "80331": {"forSale": true ,"listingPrice": 300},
         "80335": {"forSale": true ,"listingPrice": 325},
         "81764": {"forSale": true ,"listingPrice": 450},
@@ -57,9 +57,12 @@
         "122449": {"forSale": true ,"listingPrice": 275},
         "124759": {"forSale": true ,"listingPrice": 350},
         "124852": {"forSale": true ,"listingPrice": 200},
-        "127094": {"forSale": true ,"listingPrice": 1550},
+        "127094": {"forSale": false ,"listingPrice": 1550},
         "129625": {"forSale": true ,"listingPrice": 250},
-        "136557": {"forSale": true ,"listingPrice": 1750}
+        "136557": {"forSale": true ,"listingPrice": 1750},
+        "188766": {"forSale": true ,"listingPrice": 80},
+        "188769": {"forSale": true ,"listingPrice": 50},
+        "191277": {"forSale": true ,"listingPrice": 70}
     },
 
     "quests": [
@@ -67,7 +70,7 @@
             "name": "STR",
             "questLevel": 1,
             "poolId": null,
-            "professionHeroes": [86979, 122449, 124759, 112548],
+            "professionHeroes": [86979, 122449, 124759, 112548, 188766, 191277],
             "nonProfessionHeroes": [],
             "contractAddress": "0xf60AF3a32Bb94e395E17C70aB695d968F37Bd2e4"
         },
@@ -107,7 +110,7 @@
             "name": "VIT",
             "questLevel": 1,
             "poolId": null,
-            "professionHeroes": [],
+            "professionHeroes": [188769],
             "nonProfessionHeroes": [],
             "contractAddress": "0x2174bBeFbEFBD766326a7C7538f93a78Db3eD449"
         },
@@ -299,9 +302,10 @@
     "masterGardenerContract": "0xDB30643c71aC9e2122cA0341ED77d09D5f99F924",
     "auctionsContract": "0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892",
 
-    "useBackupRpc": true,
+    "selectedRpc": "poktRpc",
     "rpc": {
-        "harmonyRpc": "https://api.fuzz.fi",
+        "harmonyRpc": "https://api.harmony.one",
+        "fuzzRpc": "https://api.fuzz.fi",
         "poktRpc": "https://harmony-0-rpc.gateway.pokt.network"
     },
 
