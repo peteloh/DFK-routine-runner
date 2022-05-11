@@ -31,6 +31,15 @@
         "GoldMining": 5
     },
 
+    "minQuestGroupSize" : {
+        "STR": 1, "AGI": 1, "END": 1, "WIS": 1, "DEX": 1, "VIT": 1, "INT": 1, "LCK": 1,
+        "Fishing": 1,
+        "Foraging": 1,
+        "Gardening": 1,
+        "JEWELMining": 1,
+        "GoldMining": 4
+    },    
+    
     "minStamina" : {
         "gardening" : 25,
         "mining" : 25
